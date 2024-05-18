@@ -22,14 +22,13 @@ def view_result():
       return render_template('results.html', time_frames=time_frames, titles=titles, dir_name=dir_name)
 
 def create_directory(base_name):
-    counter = 1
-    dir_name = base_name
-    while os.path.exists('static/run-test/'+base_name): 
-        dir_name = f"static/run-test/{base_name}-{counter}"
-        counter += 1
-    os.makedirs('static/run-test/'+dir_name)
-    return dir_name
-  
+  counter = 1
+  dir_name = base_name
+  while os.path.exists('static/run-test/'+dir_name): 
+    dir_name = f"{base_name}-{counter}"
+    counter += 1
+  os.makedirs('static/run-test/'+dir_name)
+  return dir_name
 @app.route("/analyze", methods=["POST"])
 def analyze():
     prompt = request.form.get('prompt')
