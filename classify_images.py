@@ -11,7 +11,7 @@ def classify_images(image_paths):
     # Load the model and tokenizer
 
     default_category = "Unknown"
-    threshold = 0.85
+    threshold = 0.28
     # Define the categories
     categories = [
         'fight on a street',
@@ -19,6 +19,7 @@ def classify_images(image_paths):
         'street violence',
         'road',
         'car crash',
+        'car accident',
         'cars on a road',
         'car parking area',
          "snatching","kshdkankygey " , "theft", "People walking on road", "People passing by", "Accident" ,
@@ -57,4 +58,4 @@ def classify_images(image_paths):
         print(f"The image {image_path} is classified as: {top_category}")
         print(f"Time taken: {end_time - start_time} seconds")
         
-classify_images(["testing-data/2.png", "testing-data/4.png", "testing-data/chain.jpg"])
+classify_images(["exdata/image.png"])
