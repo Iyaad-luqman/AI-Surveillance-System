@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Darkbit X</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #1a1a2e;
+            font-size: 20px;
+            font-weight: 700;
+            background-image: url('Homepage.png');
+            background-size: cover;
+            background-repeat: repeat-y;
+            color: #fff;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            background-color: #00000000;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+
+ 
+
+
+
+        .hero-section p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif;
+
+        }
+
+        .btn {
+            padding: 15px 30px;
+            background-color: #044368;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+
+            border-radius: 15px;
+            color: #fff;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 10px 10px rgba(0,0,0,0.15);
+            background: linear-gradient(90deg, #3a1c71, #1e6277, #0c7583);
+        }
+
+        .section {
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+
+        /* Glassmorphism card effect */
+
+
+        .search-bar {
+            width: 50%;
+            font-family: 'Poppins', sans-serif;
+            height: 20px;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 25px;
+            border: none;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="logo.png" alt="logo" style="width: 30px; margin-top:10px; margin-right: -10px;">
+            <a href="#">SurvAI</a>
+        </div>
+        <div class="menu">
+
+        </div>
+    </nav>
+
+    <div class="section">
+        <h1>Results</h1>
+        <br>
+
+        <div class="container">
+            <div class="row"><p>Yes, Violence was found in the following frames</p></div>
+        </div>
+        
+        <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+            margin: 0 auto;
+            background-color: whitesmoke;
+            border-radius: 25px;
+            color: black;
+            font-weight: 300;
+        }
+
+
+        
+        .row {
+            padding: 10px;
+
+            margin-bottom: 10px;
+        }
+        </style>
+        <br>
+        <br>
+        <div class="card">
+            <video class="video" controls>
+                <source src="movie.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="text">
+                <p>Car Crash</p>
+                <p style="font-size: 17px; font-weight: 10;">00:02:08  -> 00:02:10</p>
+            </div>
+        </div>
+        <br><br>
+        <div class="card">
+            <video class="video" controls>
+                <source src="movie.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="text">
+                <p>Car Crash</p>
+                <p style="font-size: 17px; font-weight: 10;">00:02:08  -> 00:02:10</p>
+            </div>
+        </div>
+        <br><br>
+        <div class="card">
+            <video class="video" controls>
+                <source src="movie.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="text">
+                <p>Car Crash</p>
+                <p style="font-size: 17px; font-weight: 10;">00:02:08  -> 00:02:10</p>
+            </div>
+        </div>
+        <br><br>
+        <div class="card">
+            <video class="video" controls>
+                <source src="movie.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="text">
+                <p>Car Crash</p>
+                <p style="font-size: 17px; font-weight: 10;">00:02:08  -> 00:02:10</p>
+            </div>
+        </div>
+        <br><br>
+        <div class="card">
+            <video class="video" controls>
+                <source src="movie.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="text">
+                <p>Car Crash</p>
+                <p style="font-size: 17px; font-weight: 10;">00:02:08  -> 00:02:10</p>
+            </div>
+        </div>
+        <br><br>
+
+        
+        <style>
+        .card {
+            /* From https://css.glass */
+            background: rgba(1, 21, 26, 0.356);
+            border-radius: 16px;
+            box-shadow: 30 34px 30px rgba(0, 0, 0, 3.1);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .video {
+            flex: 1;
+            max-width: 50%;
+            margin-right: 20px;
+        }
+        
+        .text {
+            flex: 1;
+            text-align: center;
+        }
+        </style>
+    </div>
+
+</body>
+</html>

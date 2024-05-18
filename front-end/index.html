@@ -72,7 +72,7 @@
         .search-bar {
             width: 50%;
             font-family: 'Poppins', sans-serif;
-            height: 40px;
+            height: 20px;
             padding: 20px;
             margin: 20px auto;
             border-radius: 25px;
@@ -95,7 +95,8 @@
     <div class="section">
         <h1>Analyze Your CCTV Footage</h1>
         <br>
-        <img src="upload.png" alt="Upload" style="width: 50px; margin: 10px auto; display: block;">
+        <input type="file" id="fileInput" style="display: none;">
+        <img src="upload.png" alt="Upload" style="width: 50px; margin: 10px auto; display: block;" onclick="document.getElementById('fileInput').click();">
         <p style="font-size: 10px">Upload</p>
 
         <input type="text" class="search-bar" placeholder="Enter your prompt...">
