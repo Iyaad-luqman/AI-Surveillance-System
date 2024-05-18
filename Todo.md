@@ -17,8 +17,8 @@ VERCEL IS FREE ? ? ? ? ? ? ? ? ? ?  ?? ? ? ? ? ? ? ?
 [x] Try support for video from the jupyter notebook code,
 [x] If the video duration provided by dictionary is 3,it increases the time by including more content to it.
 [ ] Add support where the user gives the context its looking for and only try to detect form it.
-[ ] Try to get the timeframe of it and take a screenshot and save it. 
-[ ] NLP process using nlp_interpreter and take the user_input and parse it out for violence classification
+[x] Try to get the timeframe of it and take a screenshot and save it. 
+[x] NLP process using nlp_interpreter and take the user_input and parse it out for violence classification
 [ ] Create a Web app where there is option for selecting which process_engine to run it on.
 	
 	- Maybe try JS Framworks with Beautiful default compnents and tell the the AI tool to write the code.
@@ -32,7 +32,7 @@ VERCEL IS FREE ? ? ? ? ? ? ? ? ? ?  ?? ? ? ? ? ? ? ?
 	It should have an option for switching between gemini and ollama and providing api keys for them . 
 	ChatGPT
 
-
+[ ] Remove duplicate frames
 [ ] Add a UI Where it shows the screenshot along with timeframes.
 [ ] Add GPU OR CPU Option in settings
 [ ] Add a option for searching person with cap or person with red shirt

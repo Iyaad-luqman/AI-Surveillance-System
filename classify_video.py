@@ -12,16 +12,11 @@ model, _, preprocess = open_clip.create_model_and_transforms('ViT-B-32', pretrai
 tokenizer = open_clip.get_tokenizer('ViT-B-32')
 
 
-def classify_frame(frame, frame_count, fps):
+def classify_frame(frame, frame_count, fps, categories):
     # start_time = time.time()
     default_category = "Unknown"
     threshold = 0.47
     # Define the categories
-    categories = [
-        'car crash',
-        'Cars passing by',
-        'Unknown'
-    ]
         
     # Preprocess the frame
     image = preprocess(Image.fromarray(frame).convert("RGB")).unsqueeze(0)
@@ -60,7 +55,7 @@ def classify_frame(frame, frame_count, fps):
     # print(f"The frame in {video_path} is classified as: {top_category}")
     # print(f"Time taken: {end_time - start_time} seconds")
 
-def classify_videos(video_path, skip_seconds=0.5):
+def classify_videos(video_path, categories,true_case,  skip_seconds=0.5):
     start_time = time.time()
     video = cv2.VideoCapture(video_path)
     fps = video.get(cv2.CAP_PROP_FPS)  # Get the frames per second of the video
@@ -76,7 +71,7 @@ def classify_videos(video_path, skip_seconds=0.5):
     success, frame = video.read()
     while success:
         if processed_frames % skip_frames == 0:
-            top_category, time_string = classify_frame(frame, processed_frames, fps)
+            top_category, time_string = classify_frame(frame, processed_frames, fps, categories)
             category_dict[time_string] = top_category
         success, frame = video.read()
         processed_frames += 1
@@ -85,27 +80,15 @@ def classify_videos(video_path, skip_seconds=0.5):
     pbar.close()  # Close the progress bar when done
     end_time = time.time()
     print(f"Time taken: {end_time - start_time} seconds")
-
+    category_dict = group_categories(category_dict, categories, true_case)
+    print(category_dict)
     return category_dict
         
-def group_categories(category_dict):
+def group_categories(category_dict, categories, true_case):
     grouped_dict = {}
     prev_category = None
     start_time = None
-    categories = [
-        'car crash',
-        'Cars passing by',
-        'Unknown'
-    ]
-    true_case = [ 
-        True,
-        False,
-        False
-    ]
-    true_case.replace('True', True)
-    true_case.replace('False', False)
-    true_case.replace('true', True)
-    true_case.replace('false', False)
+    true_case = [True if x.lower() == 'true' else False if x.lower() == 'false' else x for x in true_case]
     for time_string, category in category_dict.items():
         if category != prev_category:
             if prev_category is not None and true_case[categories.index(prev_category)]:
@@ -196,7 +179,7 @@ def convert_to_seconds(time_str):
     hours, minutes, seconds, milliseconds = map(int, time_str.split(':'))
     return hours * 3600 + minutes * 60 + seconds + milliseconds / 1000
 
-result = classify_videos("testing-data/accident.mp4")
+# result = classify_videos("testing-data/accident.mp4")
 
-result = group_categories(result)
-print(result)
+# result = group_categories(result)
+# print(result)
