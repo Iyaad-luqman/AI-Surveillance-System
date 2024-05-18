@@ -30,7 +30,8 @@ def classify_frame(frame, frame_count, fps):
     text_tokens = tokenizer(categories)
 
     # Perform inference
-    with torch.no_grad(), torch.cuda.amp.autocast():
+    with torch.no_grad():
+    # with torch.no_grad(), torch.cuda.amp.autocast():
         image_features = model.encode_image(image)
         text_features = model.encode_text(text_tokens)
 
@@ -113,8 +114,54 @@ def group_categories(category_dict):
     # Add the last category
     if prev_category is not None and true_case[categories.index(prev_category)]:
         grouped_dict[f"{start_time}-{prev_time}"] = prev_category
+    print('Before:', grouped_dict)
+    grouped_dict = adjust_timeframes(grouped_dict)
     trim_videos("testing-data/accident.mp4", grouped_dict, "output")
     return grouped_dict
+
+def adjust_timeframes(input_dict):
+    output_dict = {}
+    
+    for time_range, event in input_dict.items():
+        start_time_str, end_time_str = time_range.split('-')
+        
+        # Convert time strings to seconds
+        start_time = convert_to_seconds(start_time_str)
+        end_time = convert_to_seconds(end_time_str)
+        
+        # Calculate duration
+        duration = end_time - start_time
+        
+        # If duration is less than 3 seconds
+        if duration < 3:
+            # Calculate how much to subtract/add to start/end times
+            diff = (4 - duration) / 2
+            
+            # Update start and end times
+            start_time -= diff
+            end_time += diff
+            
+            # Format adjusted times back to string
+            adjusted_start_time_str = convert_to_time_string(start_time)
+            adjusted_end_time_str = convert_to_time_string(end_time)
+            
+            # Update output dictionary
+            output_dict[f"{adjusted_start_time_str}-{adjusted_end_time_str}"] = event
+        else:
+            # If duration is already 3 seconds or more, keep the original time range
+            output_dict[time_range] = event
+    
+    return output_dict
+
+
+def convert_to_time_string(seconds):
+    hours = int(seconds // 3600)
+    minutes = int((seconds % 3600) // 60)
+    seconds = int(seconds % 60)
+    milliseconds = int((seconds % 1) * 1000)
+    
+    return f"{hours:02d}:{minutes:02d}:{seconds:02d}:{milliseconds:03d}"
+
 
 
 
