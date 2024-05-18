@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Darkbit X</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #1a1a2e;
+            font-size: 20px;
+            font-weight: 700;
+            background-image: url('Homepage.png');
+            background-size: cover;
+            background-repeat: repeat-y;
+            color: #fff;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            background-color: #00000000;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+
+ 
+
+        .hero-section h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif;
+
+        }
+
+        .hero-section p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif;
+
+        }
+
+        .btn {
+            padding: 15px 30px;
+            background-color: #044368;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+
+            border-radius: 15px;
+            color: #fff;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 10px 10px rgba(0,0,0,0.15);
+            background: linear-gradient(90deg, #3a1c71, #1e6277, #0c7583);
+        }
+
+        .section {
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+
+        /* Glassmorphism card effect */
+
+
+        .search-bar {
+            width: 50%;
+            font-family: 'Poppins', sans-serif;
+            height: 40px;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 25px;
+            border: none;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="logo.png" alt="logo" style="width: 30px; margin-top:10px; margin-right: -10px;">
+            <a href="#">SurvAI</a>
+        </div>
+        <div class="menu">
+
+        </div>
+    </nav>
+
+    <div class="section">
+        <h1>Analyze Your CCTV Footage</h1>
+        <br>
+        <img src="upload.png" alt="Upload" style="width: 50px; margin: 10px auto; display: block;">
+        <p style="font-size: 10px">Upload</p>
+
+        <input type="text" class="search-bar" placeholder="Enter your prompt...">
+        <br>
+        <br>
+        <button class="btn">Analyze now</button>
+    </div>
+
+</body>
+</html>
