@@ -7,6 +7,7 @@ from tqdm import tqdm
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 import os
 from moviepy.editor import VideoFileClip
+import numpy as np
 
 model, _, preprocess = open_clip.create_model_and_transforms('ViT-B-32', pretrained='laion2b_s34b_b79k')
 tokenizer = open_clip.get_tokenizer('ViT-B-32')
@@ -55,7 +56,7 @@ def classify_frame(frame, frame_count, fps, categories):
     # print(f"The frame in {video_path} is classified as: {top_category}")
     # print(f"Time taken: {end_time - start_time} seconds")
 
-def classify_videos(video_path, categories,true_case, dir_name, skip_seconds=0.5):
+def classify_videos(video_path, categories,true_case, dir_name, remove_duplicate_frames=False, skip_seconds=0.5):
     start_time = time.time()
     video = cv2.VideoCapture(video_path)
     fps = video.get(cv2.CAP_PROP_FPS)  # Get the frames per second of the video
@@ -69,13 +70,26 @@ def classify_videos(video_path, categories,true_case, dir_name, skip_seconds=0.5
     category_dict = {}  # Initialize the dictionary to store the top category for each processed frame
 
     success, frame = video.read()
-    while success:
-        if processed_frames % skip_frames == 0:
-            top_category, time_string = classify_frame(frame, processed_frames, fps, categories)
-            category_dict[time_string] = top_category
-        success, frame = video.read()
-        processed_frames += 1
-        pbar.update(1)  # Update the progress bar
+    if remove_duplicate_frames == False:
+        while success:
+            if processed_frames % skip_frames == 0:
+                top_category, time_string = classify_frame(frame, processed_frames, fps, categories)
+                category_dict[time_string] = top_category
+            success, frame = video.read()
+            processed_frames += 1
+            pbar.update(1) 
+    else:
+        prev_frame = None
+        while success:
+            if processed_frames % skip_frames == 0:
+                if prev_frame is not None and np.sum(np.abs(frame - prev_frame)) < 0.95:
+                    continue
+                top_category, time_string = classify_frame(frame, processed_frames, fps, categories)
+                category_dict[time_string] = top_category
+            prev_frame = frame
+            success, frame = video.read()
+            processed_frames += 1
+            pbar.update(1)  ## Update the progress bar
 
     pbar.close()  # Close the progress bar when done
     end_time = time.time()

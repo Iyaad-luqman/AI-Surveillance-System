@@ -120,12 +120,21 @@
                 fileNameParagraph.innerText = "No file selected";
             }
         }
-        </script><br>
-        <p style="font-size: 10px">Upload</p>
+        </script>
+        <p style="font-size: 15px">Upload</p>
 
         <input type="text" class="search-bar" name="prompt" placeholder="Enter your prompt...">
         <br>
         <input type="text" class="name-bar" name="test_name" placeholder="Name of the clip"><br>
+        <div class="section">
+            <!-- ... rest of your code ... -->
+        
+            <input type="checkbox" id="removeDuplicates" name="removeDuplicates" style="border-radius: 5px;">
+            <label for="removeDuplicates">Remove duplicate frames</label>
+            <br>
+        
+            <!-- ... rest of your code ... -->
+        </div>
         <button type="submit" class="btn">Analyze now</button>
     </form>
 </div>

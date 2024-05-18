@@ -34,6 +34,11 @@ def analyze():
     prompt = request.form.get('prompt')
     test_name = request.form.get('test_name')
     video_file = request.files['videoFile']
+    removeDuplicates = request.form.get('removeDuplicates')
+    if removeDuplicates == 'on':
+      removeDuplicates = True
+    else:
+      removeDuplicates = False
     dir_name = create_directory(test_name)
     video_file.save(f"static/run-test/{dir_name}/original.mp4")
     json_schema = '''{
@@ -59,7 +64,7 @@ def analyze():
     print(json_response)
     categories_list = json_data.get('categories', [])
     type_list = json_data.get('type', [])
-    result = classify_videos(f"static/run-test/{dir_name}/original.mp4", categories_list, type_list, dir_name)
+    result = classify_videos(f"static/run-test/{dir_name}/original.mp4", categories_list, type_list, dir_name, remove_duplicate_frames=removeDuplicates)
     time_frames = list(result.keys())
     titles = list(result.values())
     return redirect(url_for('view_result', time_frames=time_frames, titles=titles, dir_name=dir_name))
