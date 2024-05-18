@@ -13,15 +13,11 @@ tokenizer = open_clip.get_tokenizer('ViT-B-32')
 def classify_frame(frame, video_path):
     start_time = time.time()
     default_category = "Unknown"
-    threshold = 0.25
+    threshold = 0.47
     # Define the categories
     categories = [
-        'fight on a street',
-        'fire on a street',
         'car crash',
-        "Accident" ,
-        'violence in office',
-        'fire in office',
+        'Cars pasing by'
     ]
     # Preprocess the frame
     image = preprocess(Image.fromarray(frame).convert("RGB")).unsqueeze(0)
@@ -53,7 +49,7 @@ def classify_frame(frame, video_path):
     print(f"The frame in {video_path} is classified as: {top_category}")
     print(f"Time taken: {end_time - start_time} seconds")
 
-def classify_videos(video_path, skip_seconds=0.1):
+def classify_videos(video_path, skip_seconds=0.5):
     video = cv2.VideoCapture(video_path)
     fps = video.get(cv2.CAP_PROP_FPS)  # Get the frames per second of the video
     skip_frames = int(fps * skip_seconds)  # Calculate the number of frames to skip

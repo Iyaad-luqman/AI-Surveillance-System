@@ -37,6 +37,6 @@ VERCEL IS FREE ? ? ? ? ? ? ? ? ? ?  ?? ? ? ? ? ? ? ?
 [ ] For large video files, tell the user when in IST the video start playing, and then the user can ask queries like car crash between 7pm and 8pm, so that it trims those videos specifically and then analyses that part of the code alone 
 
 
-
+[ ] Learning from user feedback
 
 [ ] Try all the optimization techniques 
