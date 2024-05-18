@@ -27,7 +27,7 @@ app = Flask(__name__)
 
 
 def nlp_process():
-    data = ""
+    data = "In the following footage, Did any car catch fire after crashing ?"
     json_schema = '''{
   "type": "object",
   "properties": {
@@ -47,3 +47,5 @@ def nlp_process():
   "required": ["categories", "true_case"]
 }'''
     return process_prompt(data, model_name = "gemini", json_schema = json_schema)
+
+print(nlp_process())

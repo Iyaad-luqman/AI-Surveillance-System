@@ -1,7 +1,7 @@
 import json
 from langchain_community.llms import Ollama
-from .schema_validator import is_valid_schema
-from . import llm_switcher
+import llm_switcher
+import jsonschema
 
 def process_prompt(data, model_name=None, json_schema=None):
     if model_name is None:
@@ -30,3 +30,14 @@ def process_prompt(data, model_name=None, json_schema=None):
                 raise ValueError("Response does not match the JSON schema after retry.")
     except Exception as e:
         return ("The prompt did not return a valid JSON. Please Debug to know more." + str(e) + str(response))  
+
+def is_valid_schema(data, schema):
+    try:
+        jsonschema.validate(instance=json.loads(data), schema=json.loads(schema))
+        return True
+    except jsonschema.exceptions.ValidationError as ve:
+        return False
+    except json.decoder.JSONDecodeError as je:
+        raise ValueError(f"Invalid JSON format: {je}")
+    except jsonschema.SchemaError as se:
+        raise ValueError(f"Invalid JSON schema: {se}")
