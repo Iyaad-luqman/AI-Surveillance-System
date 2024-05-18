@@ -11,7 +11,7 @@
             background-color: #1a1a2e;
             font-size: 20px;
             font-weight: 700;
-            background-image: url('Homepage.png');
+            background-image: url('{{ url_for('static', filename='Homepage.png') }}');
             background-size: cover;
             background-repeat: repeat-y;
             color: #fff;
@@ -94,7 +94,7 @@
 <body>
     <nav class="navbar">
         <div class="logo">
-            <img src="logo.png" alt="logo" style="width: 30px; margin-top:10px; margin-right: -10px;">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="logo" style="width: 30px; margin-top:10px; margin-right: -10px;">
             <a href="#">SurvAI</a>
         </div>
         <div class="menu">
@@ -106,7 +106,7 @@
         <h1>Analyze Your CCTV Footage</h1>
         <br>
         <input type="file" id="fileInput" style="display: none;">
-        <img src="upload.png" alt="Upload" style="width: 50px; margin: 10px auto; display: block;" onclick="document.getElementById('fileInput').click();">
+        <img src="{{ url_for('static', filename='upload.png') }}" alt="Upload" style="width: 50px; margin: 10px auto; display: block;" onclick="document.getElementById('fileInput').click();">
         <p style="font-size: 10px">Upload</p>
 
         <input type="text" class="search-bar" placeholder="Enter your prompt...">

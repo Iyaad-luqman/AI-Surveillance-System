@@ -11,7 +11,7 @@
             background-color: #1a1a2e;
             font-size: 20px;
             font-weight: 700;
-            background-image: url('Homepage.png');
+            background-image: url('{{ url_for('static', filename='Homepage.png') }}');
             background-size: cover;
             background-repeat: repeat-y;
             color: #fff;
@@ -79,7 +79,7 @@
 <body>
     <nav class="navbar">
         <div class="logo">
-            <img src="logo.png" alt="logo" style="width: 30px; margin-top:10px; margin-right: -10px;">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="logo" style="width: 30px; margin-top:10px; margin-right: -10px;">
             <a href="#">SurvAI</a>
         </div>
         <div class="menu">
@@ -88,7 +88,7 @@
     </nav>
 
     <div class="section">
-        <h1>Results</h1>
+        <h1>CCTV AI ANALYSIS RESULTS</h1>
         <br>
 
         <div class="container">

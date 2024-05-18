@@ -1,17 +1,17 @@
 from flask import Flask, request, render_template
 from query_process import process_prompt
-app = Flask(__name__)
+
 from classify_video import classify_videos
 import json
 
-
+app = Flask(__name__)
 @app.route("/")
 def index():
   return render_template('index.html')
 
-
-
-
+@app.route("/result")
+def result():
+  return render_template('results.html')
 
 
 @app.route("/api/nlp/process")
@@ -44,3 +44,5 @@ def nlp_process():
     classify_videos("testing-data/accident.mp4", categories_list, type_list)
     return process_prompt(data, model_name = "gemini", json_schema = json_schema)
 
+if __name__ == "__main__":
+    app.run()
