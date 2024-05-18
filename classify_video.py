@@ -55,7 +55,7 @@ def classify_frame(frame, frame_count, fps, categories):
     # print(f"The frame in {video_path} is classified as: {top_category}")
     # print(f"Time taken: {end_time - start_time} seconds")
 
-def classify_videos(video_path, categories,true_case,  skip_seconds=0.5):
+def classify_videos(video_path, categories,true_case, dir_name, skip_seconds=0.5):
     start_time = time.time()
     video = cv2.VideoCapture(video_path)
     fps = video.get(cv2.CAP_PROP_FPS)  # Get the frames per second of the video
@@ -80,11 +80,10 @@ def classify_videos(video_path, categories,true_case,  skip_seconds=0.5):
     pbar.close()  # Close the progress bar when done
     end_time = time.time()
     print(f"Time taken: {end_time - start_time} seconds")
-    category_dict = group_categories(category_dict, categories, true_case)
-    print(category_dict)
+    category_dict = group_categories(category_dict, categories, true_case, dir_name)
     return category_dict
         
-def group_categories(category_dict, categories, true_case):
+def group_categories(category_dict, categories, true_case,dir_name):
     grouped_dict = {}
     prev_category = None
     start_time = None
@@ -102,7 +101,7 @@ def group_categories(category_dict, categories, true_case):
         grouped_dict[f"{start_time}-{prev_time}"] = prev_category
     print('Before:', grouped_dict)
     grouped_dict = adjust_timeframes(grouped_dict)
-    trim_videos("testing-data/accident.mp4", grouped_dict, "output")
+    trim_videos(f"static/run-test/{dir_name}/original.mp4", grouped_dict, f"static/run-test/{dir_name}" )
     return grouped_dict
 
 def adjust_timeframes(input_dict):

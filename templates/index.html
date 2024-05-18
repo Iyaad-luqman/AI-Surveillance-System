@@ -101,19 +101,34 @@
 
         </div>
     </nav>
-
-    <div class="section">
-        <h1>Analyze Your CCTV Footage</h1>
-        <br>
-        <input type="file" id="fileInput" style="display: none;">
+<div class="section">
+    <h1>Analyze Your CCTV Footage</h1>
+    <br>
+    <form id="analysisForm" action="/analyze" method="post" enctype="multipart/form-data">
+        <input type="file" id="fileInput" name="videoFile" style="display: none;" onchange="displayFileName()">
         <img src="{{ url_for('static', filename='upload.png') }}" alt="Upload" style="width: 50px; margin: 10px auto; display: block;" onclick="document.getElementById('fileInput').click();">
+        <p id="fileName"></p>
+        
+        <script>
+        function displayFileName() {
+            var input = document.getElementById('fileInput');
+            var fileNameParagraph = document.getElementById('fileName');
+        
+            if ('files' in input && input.files.length > 0) {
+                fileNameParagraph.innerText = input.files[0].name;
+            } else {
+                fileNameParagraph.innerText = "No file selected";
+            }
+        }
+        </script><br>
         <p style="font-size: 10px">Upload</p>
 
-        <input type="text" class="search-bar" placeholder="Enter your prompt...">
+        <input type="text" class="search-bar" name="prompt" placeholder="Enter your prompt...">
         <br>
-        <input type="text" class="name-bar" placeholder="Name of the clip"><br>
-        <button class="btn">Analyze now</button>
-    </div>
+        <input type="text" class="name-bar" name="test_name" placeholder="Name of the clip"><br>
+        <button type="submit" class="btn">Analyze now</button>
+    </form>
+</div>
 
 </body>
 </html>

@@ -2,6 +2,7 @@ exdata/
 output/
 .env
 __pycache__/
+static/run-test/
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies

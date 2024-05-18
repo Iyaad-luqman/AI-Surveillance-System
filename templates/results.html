@@ -116,18 +116,20 @@
         }
         </style>
         <br>
-        <br>
-        <div class="card">
-            <video class="video" controls>
-                <source src="movie.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <div class="text">
-                <p>Car Crash</p>
-                <p style="font-size: 17px; font-weight: 10;">00:02:08  -> 00:02:10</p>
+        {% for title, time_frames in zip(titles, time_frames) %}
+            <br>
+            <div class="card">
+                <video class="video" controls>
+                    <source src="static/run-test/{{ dir_name }}/{{ title|replace(' ', '_') }}-{{ loop.index }}.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="text">
+                    <p>{{ title|title }}</p>
+                    <p style="font-size: 17px; font-weight: 10;">{{ time_frames[:8] }} -> {{ time_frames[13:21] }}</p>
+                </div>
             </div>
-        </div>
-        <br><br>
+            <br><br>
+        {% endfor %}
         
         <style>
         .card {
