@@ -18,6 +18,7 @@ def classify_frame(frame, frame_count, fps):
         'Cars passing by',
         'Unknown'
     ]
+        
     # Preprocess the frame
     image = preprocess(Image.fromarray(frame).convert("RGB")).unsqueeze(0)
 
@@ -81,7 +82,36 @@ def classify_videos(video_path, skip_seconds=0.5):
 
     return category_dict
         
-result = classify_videos("testing-data/accident.mp4")
+def group_categories(category_dict):
+    grouped_dict = {}
+    prev_category = None
+    start_time = None
+    categories = [
+        'car crash',
+        'Cars passing by',
+        'Unknown'
+    ]
+    true_case = [ 
+        True,
+        False,
+        False
+    ]
 
+    for time_string, category in category_dict.items():
+        if category != prev_category:
+            if prev_category is not None and true_case[categories.index(prev_category)]:
+                grouped_dict[f"{start_time}-{prev_time}"] = prev_category
+            start_time = time_string
+        prev_category = category
+        prev_time = time_string
+
+    # Add the last category
+    if prev_category is not None and true_case[categories.index(prev_category)]:
+        grouped_dict[f"{start_time}-{prev_time}"] = prev_category
+
+    return grouped_dict
+
+result = classify_videos("testing-data/accident.mp4")
+result = group_categories(result)
 print(result)
 # classify_videos("exdata/long_accident.mp4")
