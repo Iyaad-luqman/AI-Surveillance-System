@@ -2,6 +2,7 @@ import torch
 from PIL import Image
 import open_clip
 from torchvision.transforms import Compose, Resize, CenterCrop, ToTensor, Normalize
+import time
 
 model, _, preprocess = open_clip.create_model_and_transforms('ViT-B-32', pretrained='laion2b_s34b_b79k')
 tokenizer = open_clip.get_tokenizer('ViT-B-32')
@@ -13,8 +14,6 @@ def classify_images(image_paths):
     threshold = 0.85
     # Define the categories
     categories = [
-        'people walking on a street',
-        'buildings',
         'fight on a street',
         'fire on a street',
         'street violence',
@@ -23,18 +22,12 @@ def classify_images(image_paths):
         'cars on a road',
         'car parking area',
          "snatching","kshdkankygey " , "theft", "People walking on road", "People passing by", "Accident" ,
-        'cars',
-        'office environment',
-        'office corridor',
         'violence in office',
         'fire in office',
-        'people talking',
-        'people walking in office',
-        'person walking in office',
-        'group of people'
     ]
 
     for image_path in image_paths:
+        start_time = time.time()
         # Preprocess the image
         image = preprocess(Image.open(image_path).convert("RGB")).unsqueeze(0)
 
@@ -59,7 +52,9 @@ def classify_images(image_paths):
                 top_category = default_category
             else:
                 top_category = categories[top_category_index]
+        end_time = time.time()
 
         print(f"The image {image_path} is classified as: {top_category}")
+        print(f"Time taken: {end_time - start_time} seconds")
         
-classify_images(["testing-data/2.png"])
+classify_images(["testing-data/2.png", "testing-data/4.png", "testing-data/chain.jpg"])
