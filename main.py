@@ -2,6 +2,7 @@ from flask import Flask, request
 from query_process import process_prompt
 app = Flask(__name__)
 
+
 # @app.route("/api/nlp/process")
 # def nlp_process():
 #     data = request.args.get('data')
@@ -27,7 +28,7 @@ app = Flask(__name__)
 
 
 def nlp_process():
-    data = "In the following footage, Did any car catch fire after crashing ?"
+    data = "Is there any car crash in the video ?"
     json_schema = '''{
   "type": "object",
   "properties": {
@@ -37,14 +38,14 @@ def nlp_process():
         "type": "string"
       }
     },
-    "true_case": {
+    "type": {
       "type": "array",
       "items": {
         "type": "string"
       }
     }
   },
-  "required": ["categories", "true_case"]
+  "required": ["categories", "type"]
 }'''
     return process_prompt(data, model_name = "gemini", json_schema = json_schema)
 

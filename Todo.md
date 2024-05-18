@@ -35,6 +35,7 @@ VERCEL IS FREE ? ? ? ? ? ? ? ? ? ?  ?? ? ? ? ? ? ? ?
 
 [ ] Add a UI Where it shows the screenshot along with timeframes.
 [ ] Add GPU OR CPU Option in settings
+[ ] Add a option for searching person with cap or person with red shirt
 [ ] For large video files, tell the user when in IST the video start playing, and then the user can ask queries like car crash between 7pm and 8pm, so that it trims those videos specifically and then analyses that part of the code alone 
 
 

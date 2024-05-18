@@ -102,7 +102,10 @@ def group_categories(category_dict):
         False,
         False
     ]
-
+    true_case.replace('True', True)
+    true_case.replace('False', False)
+    true_case.replace('true', True)
+    true_case.replace('false', False)
     for time_string, category in category_dict.items():
         if category != prev_category:
             if prev_category is not None and true_case[categories.index(prev_category)]:
