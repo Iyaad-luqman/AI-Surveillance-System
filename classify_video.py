@@ -162,9 +162,6 @@ def convert_to_time_string(seconds):
     
     return f"{hours:02d}:{minutes:02d}:{seconds:02d}:{milliseconds:03d}"
 
-
-
-
 def trim_videos(input_video_path, grouped_dict, output_folder):
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
