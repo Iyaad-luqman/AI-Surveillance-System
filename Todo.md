@@ -15,7 +15,7 @@ VERCEL IS FREE ? ? ? ? ? ? ? ? ? ?  ?? ? ? ? ? ? ? ?
 	It basically uses transformers and then goes to settings.yaml, fetches the classification from there, tries to get the threshold and then matches with one and then alerts the prediction.
 
 [x] Try support for video from the jupyter notebook code,
-[ ] If the video classification is detected, then skip 3 seconds and then continue
+[ ] If the video duration provided by dictionary is 3,it increases the time by including more content to it.
 [ ] Add support where the user gives the context its looking for and only try to detect form it.
 [ ] Try to get the timeframe of it and take a screenshot and save it. 
 [ ] NLP process using nlp_interpreter and take the user_input and parse it out for violence classification
@@ -34,6 +34,7 @@ VERCEL IS FREE ? ? ? ? ? ? ? ? ? ?  ?? ? ? ? ? ? ? ?
 
 
 [ ] Add a UI Where it shows the screenshot along with timeframes.
+[ ] Add GPU OR CPU Option in settings
 [ ] For large video files, tell the user when in IST the video start playing, and then the user can ask queries like car crash between 7pm and 8pm, so that it trims those videos specifically and then analyses that part of the code alone 
 
 

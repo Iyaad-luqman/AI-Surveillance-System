@@ -4,6 +4,10 @@ import open_clip
 import time
 import cv2
 from tqdm import tqdm
+from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
+import os
+from moviepy.editor import VideoFileClip
+
 model, _, preprocess = open_clip.create_model_and_transforms('ViT-B-32', pretrained='laion2b_s34b_b79k')
 tokenizer = open_clip.get_tokenizer('ViT-B-32')
 
@@ -43,11 +47,12 @@ def classify_frame(frame, frame_count, fps):
             top_category = default_category
         else:
             top_category = categories[top_category_index]
-            # Calculate the time in the video for the current frame
-    time_in_seconds = frame_count / fps
-    minutes, seconds = divmod(time_in_seconds, 60)
-    milliseconds = (seconds % 1) * 1000
-    time_string = f"{int(minutes)}:{int(seconds)}:{int(milliseconds)}"
+        # Calculate the time in the video for the current frame
+        time_in_seconds = frame_count / fps
+        hours, remainder = divmod(time_in_seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        milliseconds = (seconds % 1) * 1000
+        time_string = f"{int(hours):02d}:{int(minutes):02d}:{int(seconds):02d}:{int(milliseconds):03d}"
 
     return top_category, time_string
 
@@ -108,10 +113,43 @@ def group_categories(category_dict):
     # Add the last category
     if prev_category is not None and true_case[categories.index(prev_category)]:
         grouped_dict[f"{start_time}-{prev_time}"] = prev_category
-
+    trim_videos("testing-data/accident.mp4", grouped_dict, "output")
     return grouped_dict
 
+
+
+def trim_videos(input_video_path, grouped_dict, output_folder):
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+    
+    name_count = {}
+
+    for time_range, name in grouped_dict.items():
+        start_time_str, end_time_str = time_range.split('-')
+
+        # Convert time strings to seconds
+        start_time = convert_to_seconds(start_time_str)
+        end_time = convert_to_seconds(end_time_str)
+
+        # Ensure we have unique names for each trimmed video
+        if name not in name_count:
+            name_count[name] = 1
+        else:
+            name_count[name] += 1
+
+        output_filename = f"{name.replace(' ', '_')}-{name_count[name]}.mp4"
+        output_path = os.path.join(output_folder, output_filename)
+
+        # Load video and trim
+        with VideoFileClip(input_video_path) as video:
+            trimmed_clip = video.subclip(start_time, end_time)
+            trimmed_clip.write_videofile(output_path, codec="libx264")
+
+def convert_to_seconds(time_str):
+    hours, minutes, seconds, milliseconds = map(int, time_str.split(':'))
+    return hours * 3600 + minutes * 60 + seconds + milliseconds / 1000
+
 result = classify_videos("testing-data/accident.mp4")
+
 result = group_categories(result)
 print(result)
-# classify_videos("exdata/long_accident.mp4")
