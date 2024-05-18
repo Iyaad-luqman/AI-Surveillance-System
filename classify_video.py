@@ -1,23 +1,22 @@
 import torch
 from PIL import Image
 import open_clip
-from torchvision.transforms import Compose, Resize, CenterCrop, ToTensor, Normalize
 import time
 import cv2
-import concurrent.futures
 from tqdm import tqdm
 model, _, preprocess = open_clip.create_model_and_transforms('ViT-B-32', pretrained='laion2b_s34b_b79k')
 tokenizer = open_clip.get_tokenizer('ViT-B-32')
 
 
-def classify_frame(frame, video_path):
-    start_time = time.time()
+def classify_frame(frame, frame_count, fps):
+    # start_time = time.time()
     default_category = "Unknown"
     threshold = 0.47
     # Define the categories
     categories = [
         'car crash',
-        'Cars pasing by'
+        'Cars passing by',
+        'Unknown'
     ]
     # Preprocess the frame
     image = preprocess(Image.fromarray(frame).convert("RGB")).unsqueeze(0)
@@ -43,13 +42,19 @@ def classify_frame(frame, video_path):
             top_category = default_category
         else:
             top_category = categories[top_category_index]
+            # Calculate the time in the video for the current frame
+    time_in_seconds = frame_count / fps
+    minutes, seconds = divmod(time_in_seconds, 60)
+    milliseconds = (seconds % 1) * 1000
+    time_string = f"{int(minutes)}:{int(seconds)}:{int(milliseconds)}"
 
-    end_time = time.time()
+    return top_category, time_string
 
-    print(f"The frame in {video_path} is classified as: {top_category}")
-    print(f"Time taken: {end_time - start_time} seconds")
+    # print(f"The frame in {video_path} is classified as: {top_category}")
+    # print(f"Time taken: {end_time - start_time} seconds")
 
 def classify_videos(video_path, skip_seconds=0.5):
+    start_time = time.time()
     video = cv2.VideoCapture(video_path)
     fps = video.get(cv2.CAP_PROP_FPS)  # Get the frames per second of the video
     skip_frames = int(fps * skip_seconds)  # Calculate the number of frames to skip
@@ -59,15 +64,24 @@ def classify_videos(video_path, skip_seconds=0.5):
 
     pbar = tqdm(total=total_frames)  # Initialize the progress bar
 
+    category_dict = {}  # Initialize the dictionary to store the top category for each processed frame
+
     success, frame = video.read()
     while success:
         if processed_frames % skip_frames == 0:
-            with concurrent.futures.ThreadPoolExecutor() as executor:
-                executor.submit(classify_frame, frame, video_path)
+            top_category, time_string = classify_frame(frame, processed_frames, fps)
+            category_dict[time_string] = top_category
         success, frame = video.read()
         processed_frames += 1
         pbar.update(1)  # Update the progress bar
 
-    pbar.close() 
+    pbar.close()  # Close the progress bar when done
+    end_time = time.time()
+    print(f"Time taken: {end_time - start_time} seconds")
+
+    return category_dict
         
-classify_videos("testing-data/accident.mp4")
+result = classify_videos("testing-data/accident.mp4")
+
+print(result)
+# classify_videos("exdata/long_accident.mp4")

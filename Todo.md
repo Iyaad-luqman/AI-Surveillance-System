@@ -14,7 +14,7 @@ VERCEL IS FREE ? ? ? ? ? ? ? ? ? ?  ?? ? ? ? ? ? ? ?
 	
 	It basically uses transformers and then goes to settings.yaml, fetches the classification from there, tries to get the threshold and then matches with one and then alerts the prediction.
 
-[ ] Try support for video from the jupyter notebook code,
+[x] Try support for video from the jupyter notebook code,
 [ ] If the video classification is detected, then skip 3 seconds and then continue
 [ ] Add support where the user gives the context its looking for and only try to detect form it.
 [ ] Try to get the timeframe of it and take a screenshot and save it. 
