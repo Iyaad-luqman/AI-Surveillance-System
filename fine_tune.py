@@ -21,7 +21,7 @@ def classify_images(image_paths):
         "Accident" ,
         'fire in office',
     ]
-    threshold = 0.20
+    threshold = 0.35
     
     while threshold<1.0 : 
         for image_path in image_paths:
@@ -52,8 +52,7 @@ def classify_images(image_paths):
                     top_category = categories[top_category_index]
 
             print(f"{image_path} >>> {threshold} >> {top_category}")
-            if top_category == "Unknown":
-                break
+
         # print(f"Time taken: {end_time - start_time} seconds")
         
 classify_images(["exdata/image.png", "exdata/normal.png"])
