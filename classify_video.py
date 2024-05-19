@@ -151,14 +151,14 @@ def group_categories(category_dict, categories, true_case,dir_name):
     true_case = [True if x.lower() == 'true' else False if x.lower() == 'false' else x for x in true_case]
     for time_string, category in category_dict.items():
         if category != prev_category:
-            if prev_category is not None and true_case[categories.index(prev_category)]:
+            if prev_category is not None and prev_category in categories and true_case[categories.index(prev_category)]:
                 grouped_dict[f"{start_time}-{prev_time}"] = prev_category
             start_time = time_string
         prev_category = category
         prev_time = time_string
 
     # Add the last category
-    if prev_category is not None and true_case[categories.index(prev_category)]:
+    if prev_category is not None and prev_category in categories and true_case[categories.index(prev_category)]:
         grouped_dict[f"{start_time}-{prev_time}"] = prev_category
     print('Before:', grouped_dict)
     grouped_dict = adjust_timeframes(grouped_dict)

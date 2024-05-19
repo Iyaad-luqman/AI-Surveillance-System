@@ -118,7 +118,7 @@ def analyze():
     test_name = request.form.get('test_name')
     video_file = request.files['videoFile']
     removeDuplicates = request.form.get('removeDuplicates')
-    if not prompt or not test_name or not video_file or not removeDuplicates:
+    if not prompt or not test_name or not video_file :
           time.sleep(2)
           return redirect(url_for('index'))
     if removeDuplicates == 'on':
