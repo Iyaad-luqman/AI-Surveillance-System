@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,7 +31,7 @@
             margin: 0 15px;
         }
 
- 
+
 
 
 
@@ -51,7 +52,7 @@
             color: #fff;
             cursor: pointer;
             text-transform: uppercase;
-            box-shadow: 0 10px 10px rgba(0,0,0,0.15);
+            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.15);
             background: linear-gradient(90deg, #3a1c71, #1e6277, #0c7583);
         }
 
@@ -73,13 +74,54 @@
             border-radius: 25px;
             border: none;
         }
+
+        .center-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: #001830;
+            background-color: #E5EDF5;
+            border-style: solid;
+            border-width: 2px 2px 2px 2px;
+            border-color: rgba(255, 255, 255, 0.333);
+            border-radius: 40px 40px 40px 40px;
+            padding: 16px 24px 16px 28px;
+            transform: translate(0px, 0px) rotate(0deg);
+            transition: 0.2s;
+            box-shadow: -2px -2px 16px 0px #ffffff, 2px 2px 16px 0px rgb(95 157 231 / 48%);
+        }
+
+        button:hover {
+            color: #516d91;
+            background-color: #E5EDF5;
+            box-shadow: -2px -1px 8px 0px #ffffff, 2px 1px 8px 0px rgb(95 157 231 / 48%);
+        }
+
+        button:active {
+            box-shadow: none;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <nav class="navbar">
         <div class="logo">
-            <img src="{{ url_for('static', filename='logo.png') }}" alt="logo" style="width: 30px; margin-top:10px; margin-right: -10px;">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="logo"
+                style="width: 30px; margin-top:10px; margin-right: -10px;">
             <a href="#">SurvAI</a>
         </div>
         <div class="menu">
@@ -92,75 +134,116 @@
         <br>
 
         <div class="container">
-            <div class="row"><p>Yes, Violence was found in the following frames</p></div>
+            <div class="row">
+                <p>Yes, Violence was found in the following frames</p>
+            </div>
         </div>
-        
+
         <style>
-        .container {
-            display: flex;
-            flex-direction: column;
-            width: 50%;
-            margin: 0 auto;
-            background-color: whitesmoke;
-            border-radius: 25px;
-            color: black;
-            font-weight: 300;
-        }
+            .container {
+                display: flex;
+                flex-direction: column;
+                width: 50%;
+                margin: 0 auto;
+                background-color: whitesmoke;
+                border-radius: 25px;
+                color: black;
+                font-weight: 300;
+            }
 
 
-        
-        .row {
-            padding: 10px;
 
-            margin-bottom: 10px;
-        }
+            .row {
+                padding: 10px;
+
+                margin-bottom: 10px;
+            }
         </style>
         <br>
+        <div class="center-container">
+            <button id="saveButton" type="button">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                </svg> Save Analysis
+            </button>
+        </div>
+        <script>
+        document.getElementById('saveButton').addEventListener('click', function() {
+            var dir_name = '{{dir_name}}'; // replace this with the actual directory name
+            var titles = JSON.stringify('{{ titles }}'); // convert array to JSON string
+            var time_frames = JSON.stringify('{{ time_frames }}'); // convert array to JSON string
+
+            var formData = new FormData();
+            formData.append('name', dir_name);
+            formData.append('titles', titles);
+            formData.append('time_frames', time_frames);
+
+            fetch('/save-analysis', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+        </script>
+        <br>
         {% for title, time_frames in zip(titles, time_frames) %}
-            <br>
-            <div class="card">
-                <video class="video" controls>
-                    <source src="static/run-test/{{ dir_name }}/{{ title|replace(' ', '_') }}-{{ loop.index }}.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-                <div class="text">
-                    <p>{{ title|title }}</p>
-                    <p style="font-size: 17px; font-weight: 10;">{{ time_frames[:8] }} -> {{ time_frames[13:21] }}</p>
-                </div>
+        <br>
+        <div class="card">
+            <video class="video" controls>
+                <source src="static/run-test/{{ dir_name }}/{{ title|replace(' ', '_') }}-{{ loop.index }}.mp4"
+                    type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="text">
+                <p>{{ title|title }}</p>
+                <p style="font-size: 17px; font-weight: 10;">{{ time_frames[:8] }} -> {{ time_frames[13:21] }}</p>
             </div>
-            <br><br>
+        </div>
+        <br><br>
         {% endfor %}
-        
+
         <style>
-        .card {
-            /* From https://css.glass */
-            background: rgba(1, 21, 26, 0.356);
-            border-radius: 16px;
-            box-shadow: 30 34px 30px rgba(0, 0, 0, 3.1);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .video {
-            flex: 1;
-            max-width: 50%;
-            margin-right: 20px;
-        }
-        
-        .text {
-            flex: 1;
-            text-align: center;
-        }
+            .card {
+                /* From https://css.glass */
+                background: rgba(1, 21, 26, 0.356);
+                border-radius: 16px;
+                box-shadow: rgb(0, 0, 0, 0.7) 5px 10px 50px, rgb(0, 0, 0, 0.7) -5px 0px 350px;
+                backdrop-filter: blur(5px);
+                -webkit-backdrop-filter: blur(5px);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+                transition: all 0.3s ease-in-out;
+            }
+
+            .card:hover {
+                box-shadow: rgb(0, 0, 0) 5px 10px 50px, rgb(0, 0, 0) -5px 0px 250px;
+            }
+
+            .video {
+                flex: 1;
+                max-width: 50%;
+                margin-right: 20px;
+            }
+
+            .text {
+                flex: 1;
+                text-align: center;
+            }
         </style>
     </div>
 
 </body>
+
 </html>

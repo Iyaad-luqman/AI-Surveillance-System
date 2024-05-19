@@ -4,6 +4,7 @@ import os
 from classify_video import classify_videos
 import time
 import json
+import shutil
 
 app = Flask(__name__)
 app.debug = True
@@ -30,6 +31,38 @@ def create_directory(base_name):
     counter += 1
   os.makedirs('static/run-test/'+dir_name)
   return dir_name
+
+def create_directory_for_save(base_name):
+  counter = 1
+  dir_name = base_name
+  while os.path.exists('static/saved-test/'+dir_name): 
+    dir_name = f"{base_name}-{counter}"
+    counter += 1
+  os.makedirs('static/saved-test/'+dir_name)
+  return dir_name
+
+
+@app.route("/save-analysis", methods=["POST"])
+def save_analysis():
+  dir_name = request.form.get('name')
+  titles = json.loads(request.form.get('titles'))  # convert JSON string back to list
+  time_frames = json.loads(request.form.get('time_frames'))  # convert JSON string back to list
+
+  data = {
+    'titles': titles,
+    'time_frames': time_frames,
+  }
+  dir_name = create_directory_for_save(dir_name)
+  with open(f'static/saved-test/{dir_name}/content.json', 'w') as f:
+    json.dump(data, f)
+  src_dir = 'static/run-test/'+dir_name
+  dst_dir = 'static/saved-test/'+dir_name
+  files = os.listdir(src_dir)
+  for file in files:
+    shutil.copy(os.path.join(src_dir, file), dst_dir)
+  return 'Success', 200
+
+
 @app.route("/analyze", methods=["POST"])
 def analyze():
     
