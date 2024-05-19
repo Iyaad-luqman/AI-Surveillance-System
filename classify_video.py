@@ -13,7 +13,7 @@ model, _, preprocess = open_clip.create_model_and_transforms('ViT-B-32', pretrai
 tokenizer = open_clip.get_tokenizer('ViT-B-32')
 
 
-def classify_frame(frame, frame_count, fps, categories):
+def classify_frame(frame, frame_count, fps, categories, device='cpu'):
     # start_time = time.time()
     default_category = "Unknown"
     threshold = 0.47
@@ -26,37 +26,61 @@ def classify_frame(frame, frame_count, fps, categories):
     text_tokens = tokenizer(categories)
 
     # Perform inference
-    with torch.no_grad():
-    # with torch.no_grad(), torch.cuda.amp.autocast():
-        image_features = model.encode_image(image)
-        text_features = model.encode_text(text_tokens)
+    if device == 'cuda':    
+        with torch.no_grad(), torch.cuda.amp.autocast():
+            image_features = model.encode_image(image)
+            text_features = model.encode_text(text_tokens)
 
-        # Normalize features
-        image_features /= image_features.norm(dim=-1, keepdim=True)
-        text_features /= text_features.norm(dim=-1, keepdim=True)
+            # Normalize features
+            image_features /= image_features.norm(dim=-1, keepdim=True)
+            text_features /= text_features.norm(dim=-1, keepdim=True)
 
-        # Calculate the similarity between image and text features
-        similarity = (100.0 * image_features @ text_features.T).softmax(dim=-1)
+            # Calculate the similarity between image and text features
+            similarity = (100.0 * image_features @ text_features.T).softmax(dim=-1)
 
-        # Get the highest probability category
-        top_category_index = similarity.argmax()
-        if similarity[0, top_category_index] < threshold:  # Replace threshold with your desired value
-            top_category = default_category
-        else:
-            top_category = categories[top_category_index]
-        # Calculate the time in the video for the current frame
-        time_in_seconds = frame_count / fps
-        hours, remainder = divmod(time_in_seconds, 3600)
-        minutes, seconds = divmod(remainder, 60)
-        milliseconds = (seconds % 1) * 1000
-        time_string = f"{int(hours):02d}:{int(minutes):02d}:{int(seconds):02d}:{int(milliseconds):03d}"
+            # Get the highest probability category
+            top_category_index = similarity.argmax()
+            if similarity[0, top_category_index] < threshold:  # Replace threshold with your desired value
+                top_category = default_category
+            else:
+                top_category = categories[top_category_index]
+            # Calculate the time in the video for the current frame
+            time_in_seconds = frame_count / fps
+            hours, remainder = divmod(time_in_seconds, 3600)
+            minutes, seconds = divmod(remainder, 60)
+            milliseconds = (seconds % 1) * 1000
+            time_string = f"{int(hours):02d}:{int(minutes):02d}:{int(seconds):02d}:{int(milliseconds):03d}"
+    else:
+        with torch.no_grad():
+            image_features = model.encode_image(image)
+            text_features = model.encode_text(text_tokens)
+
+            # Normalize features
+            image_features /= image_features.norm(dim=-1, keepdim=True)
+            text_features /= text_features.norm(dim=-1, keepdim=True)
+
+            # Calculate the similarity between image and text features
+            similarity = (100.0 * image_features @ text_features.T).softmax(dim=-1)
+
+            # Get the highest probability category
+            top_category_index = similarity.argmax()
+            if similarity[0, top_category_index] < threshold:  # Replace threshold with your desired value
+                top_category = default_category
+            else:
+                top_category = categories[top_category_index]
+            # Calculate the time in the video for the current frame
+            time_in_seconds = frame_count / fps
+            hours, remainder = divmod(time_in_seconds, 3600)
+            minutes, seconds = divmod(remainder, 60)
+            milliseconds = (seconds % 1) * 1000
+            time_string = f"{int(hours):02d}:{int(minutes):02d}:{int(seconds):02d}:{int(milliseconds):03d}"
 
     return top_category, time_string
 
     # print(f"The frame in {video_path} is classified as: {top_category}")
     # print(f"Time taken: {end_time - start_time} seconds")
 
-def classify_videos(video_path, categories,true_case, dir_name, remove_duplicate_frames=False, skip_seconds=0.5):
+def classify_videos(video_path, categories,true_case, dir_name, remove_duplicate_frames=False, skip_seconds=0.5, device='cpu'):
     start_time = time.time()
     video = cv2.VideoCapture(video_path)
     fps = video.get(cv2.CAP_PROP_FPS)  # Get the frames per second of the video
@@ -73,7 +97,7 @@ def classify_videos(video_path, categories,true_case, dir_name, remove_duplicate
     if remove_duplicate_frames == False:
         while success:
             if processed_frames % skip_frames == 0:
-                top_category, time_string = classify_frame(frame, processed_frames, fps, categories)
+                top_category, time_string = classify_frame(frame, processed_frames, fps, categories, device=device)
                 category_dict[time_string] = top_category
             success, frame = video.read()
             processed_frames += 1
@@ -84,7 +108,7 @@ def classify_videos(video_path, categories,true_case, dir_name, remove_duplicate
             if processed_frames % skip_frames == 0:
                 if prev_frame is not None and np.sum(np.abs(frame - prev_frame)) < 0.95:
                     continue
-                top_category, time_string = classify_frame(frame, processed_frames, fps, categories)
+                top_category, time_string = classify_frame(frame, processed_frames, fps, categories, device=device)
                 category_dict[time_string] = top_category
             prev_frame = frame
             success, frame = video.read()

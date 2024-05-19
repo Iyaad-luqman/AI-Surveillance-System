@@ -7,11 +7,21 @@ import json
 import ast
 import shutil
 import html
+import yaml
+
 
 
 app = Flask(__name__)
 app.debug = True
 app.jinja_env.globals.update(zip=zip)  
+
+def load_settings():
+    with open("settings.yaml", 'r') as stream:
+        try:
+            return yaml.safe_load(stream)
+        except yaml.YAMLError as exc:
+            print(exc)
+
 @app.route("/")
 def index():
   return render_template('index.html')
@@ -96,6 +106,7 @@ def analyze():
       removeDuplicates = False
     dir_name = create_directory(test_name)
     video_file.save(f"static/run-test/{dir_name}/original.mp4")
+    
     json_schema = '''{
   "type": "object",
   "properties": {
@@ -114,12 +125,18 @@ def analyze():
   },
   "required": ["categories", "type"]
 }'''
-    json_response = process_prompt(prompt, model_name = "gemini", json_schema = json_schema)
+
+    settings = load_settings()
+    model_name = settings['model']['name']
+    device = settings['model']['device']
+    json_response = process_prompt(prompt, model_name = model_name, json_schema = json_schema)
     json_data = json.loads(json_response)
     print(json_response)
+    
+    
     categories_list = json_data.get('categories', [])
     type_list = json_data.get('type', [])
-    result = classify_videos(f"static/run-test/{dir_name}/original.mp4", categories_list, type_list, dir_name, remove_duplicate_frames=removeDuplicates)
+    result = classify_videos(f"static/run-test/{dir_name}/original.mp4", categories_list, type_list, dir_name, remove_duplicate_frames=removeDuplicates, device=device)
     time_frames = list(result.keys())
     titles = list(result.values())
     return redirect(url_for('view_result', time_frames=time_frames, titles=titles, dir_name=dir_name))

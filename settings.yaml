@@ -1,0 +1,7 @@
+# Settings
+
+#Specify "GEMINI_API_KEY=" in .env file.
+
+model:
+  name: gemini # or 'llama3' through ollama
+  device: cpu # or cuda
