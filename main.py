@@ -80,6 +80,14 @@ def saved_analysis():
   saved_tests = os.listdir('static/saved-test')
   return render_template('saved_analysis.html', saved_tests=saved_tests)
 
+@app.route("/false_positive", methods=["POST"])
+def false_positive():
+      dir_name= request.form.get('dirName')
+      index = request.form.get('index')
+      title = request.form.get('title')
+      title = title.replace(' ', '_')
+      file_name = 'static/run-test/'+dir_name+'/'+title+'-'+index+'.mp4'
+      
 
 
 @app.route("/view_saved_test/<dir_name>")

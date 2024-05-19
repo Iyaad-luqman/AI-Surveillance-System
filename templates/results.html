@@ -12,7 +12,7 @@
             background-color: #1a1a2e;
             font-size: 20px;
             font-weight: 700;
-            background-image: url('{{ url_for('static', filename='Homepage.png') }}');
+            background-image: url('{{ url_for(' static', filename=' Homepage.png') }}');
             background-size: cover;
             background-repeat: repeat-y;
             color: #fff;
@@ -82,7 +82,7 @@
         }
 
 
-        button {
+        .button1 {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -104,14 +104,61 @@
             box-shadow: -2px -2px 16px 0px #ffffff, 2px 2px 16px 0px rgb(95 157 231 / 48%);
         }
 
-        button:hover {
+        .button1:hover {
             color: #516d91;
             background-color: #E5EDF5;
             box-shadow: -2px -1px 8px 0px #ffffff, 2px 1px 8px 0px rgb(95 157 231 / 48%);
         }
 
-        button:active {
+        .button1:active {
             box-shadow: none;
+        }
+
+        .button2 {
+            font-size: 0.7em;
+            /* Decreased from 1.4em */
+            padding: 0.6em 0.6em;
+            border-radius: 0.5em;
+            border: none;
+            background-color: #000;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 2px 2px 4px #000000b4;
+        }
+
+        .fbcontainer {
+            position: relative;
+            padding: 1.3px;
+            background: linear-gradient(90deg, #03a9f4, #f441a5);
+            border-radius: 0.4em;
+            transition: all 0.4s ease;
+            width: 104px;
+            /* Set a fixed width */
+            max-width: 100%;
+            /* Ensure it doesn't overflow its parent */
+            margin-left: auto;
+            margin-right: auto;
+            height: 35px;
+        }
+
+        .fbcontainer::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            margin: auto;
+            border-radius: 0.8em;
+            z-index: -10;
+            filter: blur(0);
+            transition: filter 0.4s ease;
+        }
+
+        .fbcontainer:hover::before {
+            background: linear-gradient(90deg, #03a9f4, #f441a5);
+            filter: blur(1.2em);
+        }
+
+        .fbcontainer:active::before {
+            filter: blur(0.2em);
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
@@ -134,11 +181,6 @@
         <h1>CCTV AI ANALYSIS RESULTS</h1>
         <br>
 
-        <div class="container">
-            <div class="row">
-                <p>The following results was found after anlyzing the clip</p>
-            </div>
-        </div>
 
         <style>
             .container {
@@ -162,7 +204,7 @@
         </style>
         <br>
         <div class="center-container">
-            <button id="saveButton" type="button">
+            <button id="saveButton" class="button1"" type=" button">
                 <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
                     stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
                     <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
@@ -170,47 +212,95 @@
             </button>
         </div>
         <script>
-        document.getElementById('saveButton').addEventListener('click', function() {
-            var dir_name = '{{dir_name}}'; // replace this with the actual directory name
-            var titles = JSON.stringify('{{ titles }}'); // convert array to JSON string
-            var time_frames = JSON.stringify('{{ time_frames }}'); // convert array to JSON string
+            document.getElementById('saveButton').addEventListener('click', function () {
+                var dir_name = '{{dir_name}}'; // replace this with the actual directory name
+                var titles = JSON.stringify('{{ titles }}'); // convert array to JSON string
+                var time_frames = JSON.stringify('{{ time_frames }}'); // convert array to JSON string
 
-            var formData = new FormData();
-            formData.append('name', dir_name);
-            formData.append('titles', titles);
-            formData.append('time_frames', time_frames);
+                var formData = new FormData();
+                formData.append('name', dir_name);
+                formData.append('titles', titles);
+                formData.append('time_frames', time_frames);
 
-            fetch('/save-analysis', {
-                method: 'POST',
-                body: formData,
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
+                fetch('/save-analysis', {
+                    method: 'POST',
+                    body: formData,
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
             });
-        });
         </script>
         <br>
         {% for title, time_frames in zip(titles, time_frames) %}
         <br>
         <div class="card">
-            <video class="video" controls>
-                <source src="static/run-test/{{ dir_name }}/{{ title|replace(' ', '_') }}-{{ loop.index }}.mp4"
-                    type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <div class="text">
-                <p>{{ title|title }}</p>
-                <p style="font-size: 17px; font-weight: 10;">{{ time_frames[:8] }} -> {{ time_frames[13:21] }}</p>
+            <div class="card-content">
+                <video class="video" controls>
+                    <source src="static/run-test/{{ dir_name }}/{{ title|replace(' ', '_') }}-{{ loop.index }}.mp4"
+                        type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="text">
+                    <p style="font-size: 30px;">{{ title|title }}</p>
+                    <p style="font-size: 17px; font-weight: 10;">{{ time_frames[:8] }} -> {{ time_frames[13:21] }}</p>
+                    <br>
+                    <div class="fbcontainer">
+                        <button class="button2"
+                            onclick="reportFalsePositive('{{ dir_name }}, {{title}} , {{ loop.index }}', this)">False
+                            Positive</button>
+                    </div>
+                </div>
             </div>
         </div>
         <br><br>
         {% endfor %}
+        <script>
+            function reportFalsePositive(dirName, title, index, buttonElement) {
 
+
+                buttonElement.textContent = 'Reported';
+
+                // Create a new FormData instance
+                const formData = new FormData();
+
+                // Append the dirName and index to the form data
+                formData.append('dirName', dirName);
+                formData.append('title', title);
+                formData.append('index', index);
+
+
+                // Send a POST request to the /false_positive endpoint with the form data
+                fetch('/false_positive', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.success) {
+                            console.error('Error:', data);
+                            // If there's an error, change the button text back to "False Positive"
+                            buttonElement.textContent = 'False Positive';
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        // If there's an error, change the button text back to "False Positive"
+                        buttonElement.textContent = 'False Positive';
+                    });
+            }
+        </script>
         <style>
+            .card-content {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
             .card {
                 /* From https://css.glass */
                 background: rgba(1, 21, 26, 0.356);
@@ -218,7 +308,6 @@
                 box-shadow: rgb(0, 0, 0, 0.7) 5px 10px 50px, rgb(0, 0, 0, 0.7) -5px 0px 350px;
                 backdrop-filter: blur(5px);
                 -webkit-backdrop-filter: blur(5px);
-                display: flex;
                 align-items: center;
                 justify-content: space-between;
                 width: 100%;

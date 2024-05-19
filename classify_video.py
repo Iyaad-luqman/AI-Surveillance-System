@@ -13,6 +13,7 @@ model, _, preprocess = open_clip.create_model_and_transforms('ViT-B-32', pretrai
 tokenizer = open_clip.get_tokenizer('ViT-B-32')
 
 
+
 def classify_frame(frame, frame_count, fps, categories, device='cpu'):
     # start_time = time.time()
     default_category = "Unknown"
