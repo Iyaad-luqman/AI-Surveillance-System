@@ -36,9 +36,10 @@ VERCEL IS FREE ? ? ? ? ? ? ? ? ? ?  ?? ? ? ? ? ? ? ?
 [x] Add a UI Where it shows the screenshot along with timeframes.
 [x] Add GPU OR CPU Option in settings
 [x] Gemini or Ollama setting
-[ ] Add a option for searching person with cap or person with red shirt
 [x] For large video files, tell the user when in IST the video start playing, and then the user can ask queries like car crash between 7pm and 8pm, so that it trims those videos specifically and then analyses that part of the code alone 
 
-[ ] Learning from user feedback
+[x] Learning from user feedback
 
 [x] Try all the optimization techniques 
+[ ] Add a option for searching person with cap or person with red shirt
+[ ] Ready the ppt and documnentaion and flowchart
