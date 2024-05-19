@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SurvAI</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #1a1a2e;
+            font-size: 20px;
+            font-weight: 700;
+            background-image: url('{{ url_for('static', filename='Homepage.png') }}');
+            background-size: cover;
+            background-repeat: repeat-y;
+            color: #fff;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            background-color: #00000000;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+
+
+
+
+
+        .hero-section p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif;
+
+        }
+
+        .btn {
+            padding: 15px 30px;
+            background-color: #044368;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+
+            border-radius: 15px;
+            color: #fff;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(90deg, #3a1c71, #1e6277, #0c7583);
+        }
+
+        .section {
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+
+        /* Glassmorphism card effect */
+
+
+        .search-bar {
+            width: 50%;
+            font-family: 'Poppins', sans-serif;
+            height: 20px;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 25px;
+            border: none;
+        }
+
+        .center-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .center-container-card {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+   
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="logo"
+                style="width: 30px; margin-top:10px; margin-right: -10px;">
+            <a href="/">SurvAI</a>
+        </div>
+        <div class="menu">
+            <a href="/saved_analysis" style="font-weight: 100; font-size: 17px;">Saved Analysis</a>
+
+        </div>
+    </nav>
+
+    <div class="section">
+        <h1>Saved Analysis Results</h1>
+        <br>
+
+       
+        <style>
+            .container {
+                display: flex;
+                flex-direction: column;
+                width: 50%;
+                margin: 0 auto;
+                background-color: whitesmoke;
+                border-radius: 25px;
+                color: black;
+                font-weight: 300;
+            }
+
+
+
+            .row {
+                padding: 10px;
+
+                margin-bottom: 10px;
+            }
+        </style>
+        <br>
+ 
+      
+
+        <div class="center-container-card">
+
+        <style>
+            .card video {
+                margin-top: 40px;
+                padding: 10px;
+                width: 90%; /* Make the video take up the full width of its container */
+                height: auto;
+            }   
+        </style>
+        {% for test in saved_tests %}
+        <a href="{{ url_for('view_saved_test', dir_name=test) }}">
+            <div class="card">
+                <video controls>
+                    <source src="{{ url_for('static', filename='saved-test/' + test + '/original.mp4') }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <h3>{{ test|capitalize }}</h3>
+            </div>
+        {% endfor %}
+         </a>
+        <style>
+            .card {
+                width: 450px;
+                height: 404px;
+                border-radius: 30px;
+                background: #212121;
+
+                            /* From https://css.glass */
+                background: rgba(2, 57, 61, 0.6);
+                border-radius: 16px;
+                box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+                backdrop-filter: blur(16.4px);
+                -webkit-backdrop-filter: blur(16.4px);
+                margin:90px;
+                }
+               
+               
+        </style>
+    </div>
+
+</body>
+
+</html>

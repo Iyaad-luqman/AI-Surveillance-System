@@ -161,44 +161,13 @@
             }
         </style>
         <br>
-        <div class="center-container">
-            <button id="saveButton" type="button">
-                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
-                    stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                </svg> Save Analysis
-            </button>
-        </div>
-        <script>
-        document.getElementById('saveButton').addEventListener('click', function() {
-            var dir_name = '{{dir_name}}'; // replace this with the actual directory name
-            var titles = JSON.stringify('{{ titles }}'); // convert array to JSON string
-            var time_frames = JSON.stringify('{{ time_frames }}'); // convert array to JSON string
-
-            var formData = new FormData();
-            formData.append('name', dir_name);
-            formData.append('titles', titles);
-            formData.append('time_frames', time_frames);
-
-            fetch('/save-analysis', {
-                method: 'POST',
-                body: formData,
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-        });
-        </script>
+        
         <br>
         {% for title, time_frames in zip(titles, time_frames) %}
         <br>
         <div class="card">
             <video class="video" controls>
-                <source src="static/run-test/{{ dir_name }}/{{ title|replace(' ', '_') }}-{{ loop.index }}.mp4"
+                <source src="/static/saved-test/{{ dir_name }}/{{ title|replace(' ', '_') }}-{{ loop.index }}.mp4"
                     type="video/mp4">
                 Your browser does not support the video tag.
             </video>

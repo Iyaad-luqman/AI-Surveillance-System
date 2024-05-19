@@ -4,7 +4,10 @@ import os
 from classify_video import classify_videos
 import time
 import json
+import ast
 import shutil
+import html
+
 
 app = Flask(__name__)
 app.debug = True
@@ -62,6 +65,20 @@ def save_analysis():
     shutil.copy(os.path.join(src_dir, file), dst_dir)
   return 'Success', 200
 
+@app.route("/saved_analysis")
+def saved_analysis():
+  saved_tests = os.listdir('static/saved-test')
+  return render_template('saved_analysis.html', saved_tests=saved_tests)
+
+
+
+@app.route("/view_saved_test/<dir_name>")
+def view_saved_test(dir_name):
+  with open(f'static/saved-test/{dir_name}/content.json', 'r') as f:
+    data = json.load(f)
+  titles = ast.literal_eval(html.unescape(data['titles']))
+  time_frames = ast.literal_eval(html.unescape(data['time_frames']))
+  return render_template('saved_results.html',  time_frames=time_frames, titles=titles, dir_name=dir_name)
 
 @app.route("/analyze", methods=["POST"])
 def analyze():
