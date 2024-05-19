@@ -85,6 +85,10 @@
             flex-wrap: wrap;
             justify-content: space-around;
         }
+        .card a {
+            text-decoration: none; /* Remove underline */
+            color: inherit; /* Inherit color from parent */
+        }
 
    
     </style>
@@ -144,7 +148,7 @@
             }   
         </style>
         {% for test in saved_tests %}
-        <a href="{{ url_for('view_saved_test', dir_name=test) }}">
+        <a style="text-decoration: none; color: inherit" href="{{ url_for('view_saved_test', dir_name=test) }}">
             <div class="card">
                 <video controls>
                     <source src="{{ url_for('static', filename='saved-test/' + test + '/original.mp4') }}" type="video/mp4">
