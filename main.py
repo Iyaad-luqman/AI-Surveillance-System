@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, url_for, redirect
 from query_process import process_prompt
 import os
 from classify_video import classify_videos
+import time
 import json
 
 app = Flask(__name__)
@@ -31,10 +32,14 @@ def create_directory(base_name):
   return dir_name
 @app.route("/analyze", methods=["POST"])
 def analyze():
+    
     prompt = request.form.get('prompt')
     test_name = request.form.get('test_name')
     video_file = request.files['videoFile']
     removeDuplicates = request.form.get('removeDuplicates')
+    if not prompt or not test_name or not video_file or not removeDuplicates:
+          time.sleep(2)
+          return redirect(url_for('index'))
     if removeDuplicates == 'on':
       removeDuplicates = True
     else:
