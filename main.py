@@ -83,20 +83,20 @@ def saved_analysis():
 
 @app.route("/false_positive", methods=["POST"])
 def false_positive():
-      dir_name= request.form.get('dirName')
-      index = request.form.get('index')
-      title = request.form.get('title')
-      title = title.replace(' ', '_')
-      file_name = 'static/run-test/'+dir_name+'/'+title+'-'+index+'.mp4'
-      settings = load_settings()
-      model_name = settings['model']['name']
-      json_response= opposite_process_prompt(title, model_name = model_name)
-      json_data = json.loads(json_response)
-      title = json_data.get('opposite')
-      print(json_response)
-      report_false_positive(file_name, title)
-      return 'Success', 200
-      
+  dir_name= request.form.get('dirName')
+  index = request.form.get('index')
+  title = request.form.get('title')
+  title = title.replace(' ', '_')
+  file_name = 'static/run-test/'+dir_name+'/'+title+'-'+index+'.mp4'
+  report_false_positive(file_name, title)
+
+  # Open the file in append mode and write the file_name to it
+  with open('static/run-test/'+dir_name+'/false_positive.txt', 'a') as f:
+    f.write(file_name + '\n')
+
+  return 'Success', 200
+
+
 
 
 @app.route("/view_saved_test/<dir_name>")

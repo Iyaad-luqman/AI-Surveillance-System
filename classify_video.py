@@ -23,11 +23,11 @@ def initialize_model(model_name='ViT-B-32', pretrained='laion2b_s34b_b79k', mode
     model,_, preprocess = open_clip.create_model_and_transforms(model_name, pretrained=pretrained)
     tokenizer = open_clip.get_tokenizer(model_name)
     
-    if os.path.exists(model_path):
-        print(f"Loading fine-tuned model from {model_path}")
-        model = load_model(model, model_path, device)
-    else:
-        print("No fine-tuned model found. Using pre-trained model.")
+    # if os.path.exists(model_path):
+    #     print(f"Loading fine-tuned model from {model_path}")
+    #     model = load_model(model, model_path, device)
+    # else:
+    #     print("No fine-tuned model found. Using pre-trained model.")
     
     return model, preprocess, tokenizer
 
