@@ -12,7 +12,7 @@
             background-color: #1a1a2e;
             font-size: 20px;
             font-weight: 700;
-            background-image: url('{{ url_for(' static', filename=' Homepage.png') }}');
+            background-image: url('{{ url_for('static', filename='Homepage.png') }}');
             background-size: cover;
             background-repeat: repeat-y;
             color: #fff;
@@ -204,7 +204,7 @@
         </style>
         <br>
         <div class="center-container">
-            <button id="saveButton" class="button1"" type=" button">
+            <button id="saveButton" class="button1" type=" button">
                 <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
                     stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
                     <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
@@ -251,7 +251,7 @@
                     <br>
                     <div class="fbcontainer">
                         <button class="button2"
-                            onclick="reportFalsePositive('{{ dir_name }}, {{title}} , {{ loop.index }}', this)">False
+                            onclick="reportFalsePositive('{{ dir_name }}', '{{title}}' , '{{ loop.index }}', this)">False
                             Positive</button>
                     </div>
                 </div>

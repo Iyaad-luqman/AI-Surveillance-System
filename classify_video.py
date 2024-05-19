@@ -9,19 +9,37 @@ import os
 from moviepy.editor import VideoFileClip
 import numpy as np
 
-model, _, preprocess = open_clip.create_model_and_transforms('ViT-B-32', pretrained='laion2b_s34b_b79k')
-tokenizer = open_clip.get_tokenizer('ViT-B-32')
+
+def save_model(model, filepath):
+    torch.save(model.state_dict(), filepath)
 
 
+def load_model(model, filepath, device='cpu'):
+    model.load_state_dict(torch.load(filepath, map_location=device))
+    model.eval()
+    return model
 
-def classify_frame(frame, frame_count, fps, categories, device='cpu'):
+def initialize_model(model_name='ViT-B-32', pretrained='laion2b_s34b_b79k', model_path='fine_tuned_model.pth', device='cpu'):
+    model,_, preprocess = open_clip.create_model_and_transforms(model_name, pretrained=pretrained)
+    tokenizer = open_clip.get_tokenizer(model_name)
+    
+    if os.path.exists(model_path):
+        print(f"Loading fine-tuned model from {model_path}")
+        model = load_model(model, model_path, device)
+    else:
+        print("No fine-tuned model found. Using pre-trained model.")
+    
+    return model, preprocess, tokenizer
+
+
+def classify_frame(frame, frame_count, fps, categories, model, preprocess, tokenizer,  device='cpu'):
     # start_time = time.time()
     default_category = "Unknown"
     threshold = 0.47
     # Define the categories
         
     # Preprocess the frame
-    image = preprocess(Image.fromarray(frame).convert("RGB")).unsqueeze(0)
+    image = preprocess(Image.fromarray(frame).convert("RGB")).unsqueeze(0).to(device)
 
     # Tokenize the categories
     text_tokens = tokenizer(categories)
@@ -81,8 +99,12 @@ def classify_frame(frame, frame_count, fps, categories, device='cpu'):
     # print(f"The frame in {video_path} is classified as: {top_category}")
     # print(f"Time taken: {end_time - start_time} seconds")
 
-def classify_videos(video_path, categories,true_case, dir_name, remove_duplicate_frames=False, skip_seconds=0.5, device='cpu'):
+def classify_videos(video_path, categories, true_case, dir_name, model_path='fine_tuned_model.pth', remove_duplicate_frames=False, skip_seconds=0.5, device='cpu'):
     start_time = time.time()
+    
+    model, preprocess, tokenizer = initialize_model(model_path=model_path, device=device)
+    
+    
     video = cv2.VideoCapture(video_path)
     fps = video.get(cv2.CAP_PROP_FPS)  # Get the frames per second of the video
     skip_frames = int(fps * skip_seconds)  # Calculate the number of frames to skip
@@ -95,10 +117,10 @@ def classify_videos(video_path, categories,true_case, dir_name, remove_duplicate
     category_dict = {}  # Initialize the dictionary to store the top category for each processed frame
 
     success, frame = video.read()
-    if remove_duplicate_frames == False:
+    if not remove_duplicate_frames :
         while success:
             if processed_frames % skip_frames == 0:
-                top_category, time_string = classify_frame(frame, processed_frames, fps, categories, device=device)
+                top_category, time_string = classify_frame(frame, processed_frames, fps, categories, model, preprocess, tokenizer, device=device)
                 category_dict[time_string] = top_category
             success, frame = video.read()
             processed_frames += 1
@@ -109,7 +131,7 @@ def classify_videos(video_path, categories,true_case, dir_name, remove_duplicate
             if processed_frames % skip_frames == 0:
                 if prev_frame is not None and np.sum(np.abs(frame - prev_frame)) < 0.95:
                     continue
-                top_category, time_string = classify_frame(frame, processed_frames, fps, categories, device=device)
+                top_category, time_string = classify_frame(frame, processed_frames, fps, categories, model, preprocess, tokenizer, device=device)
                 category_dict[time_string] = top_category
             prev_frame = frame
             success, frame = video.read()

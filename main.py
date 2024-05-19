@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, url_for, redirect
-from query_process import process_prompt
+from query_process import process_prompt, opposite_process_prompt
 import os
 from classify_video import classify_videos
 import time
@@ -8,6 +8,7 @@ import ast
 import shutil
 import html
 import yaml
+from false_positive import report_false_positive
 
 
 
@@ -87,6 +88,14 @@ def false_positive():
       title = request.form.get('title')
       title = title.replace(' ', '_')
       file_name = 'static/run-test/'+dir_name+'/'+title+'-'+index+'.mp4'
+      settings = load_settings()
+      model_name = settings['model']['name']
+      json_response= opposite_process_prompt(title, model_name = model_name)
+      json_data = json.loads(json_response)
+      title = json_data.get('opposite')
+      print(json_response)
+      report_false_positive(file_name, title)
+      return 'Success', 200
       
 
 
