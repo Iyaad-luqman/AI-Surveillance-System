@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, url_for, redirect
+from flask import Flask, request, render_template, url_for, redirect, send_from_directory
 from query_process import process_prompt, opposite_process_prompt
 import os
 from classify_video import classify_videos
@@ -22,7 +22,11 @@ def load_settings():
             return yaml.safe_load(stream)
         except yaml.YAMLError as exc:
             print(exc)
-
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+    
 @app.route("/")
 def index():
   return render_template('index.html')
