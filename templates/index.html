@@ -256,6 +256,47 @@
               opacity: 1;
             }
           }
+          .cyberpunk-checkbox {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #30cfd0;
+            border-radius: 5px;
+            background-color: transparent;
+            display: inline-block;
+            position: relative;
+            margin-right: 10px;
+            cursor: pointer;
+          }
+          
+          .cyberpunk-checkbox:before {
+            content: "";
+            background-color: #30cfd0;
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+            transition: all 0.3s ease-in-out;
+          }
+          
+          .cyberpunk-checkbox:checked:before {
+            transform: translate(-50%, -50%) scale(1);
+          }
+          
+          .cyberpunk-checkbox-label {
+            font-size: 15px;
+            margin-top: -50px;
+            color: #fff;
+            font-weight: 200;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+          }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 </head>
@@ -307,12 +348,16 @@
         <br>
         <input type="text" class="name-bar" name="test_name" placeholder="Name of the clip"><br>
         <div class="section">
-            <!-- ... rest of your code ... -->
-        
-            <input type="checkbox" id="removeDuplicates" name="removeDuplicates" style="border-radius: 5px;">
-            <label for="removeDuplicates">Remove duplicate frames</label>
-            <br><br>
+        <div class="center-container">
 
+            <!-- ... rest of your code ... -->
+            <label  for="removeDuplicates" class="cyberpunk-checkbox-label">
+                <input type="checkbox"  id="removeDuplicates" name="removeDuplicates" class="cyberpunk-checkbox">
+                Remove duplicate frames</label>
+
+            
+            </div>
+                <br>
             <!-- ... rest of your code ... -->
             <div class="loader" id="loader" style="display: none;">Anlayzing...
                 <span></span>
