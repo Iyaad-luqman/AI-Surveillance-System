@@ -179,9 +179,9 @@ def adjust_timeframes(input_dict):
         duration = end_time - start_time
         
         # If duration is less than 3 seconds
-        if duration < 3:
+        if duration < 2:
             # Calculate how much to subtract/add to start/end times
-            diff = (4 - duration) / 2
+            diff = (2 - duration) / 2
             
             # Update start and end times
             start_time -= diff
