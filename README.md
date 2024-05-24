@@ -25,9 +25,10 @@ SurvAI is designed to be flexible and adaptable to your specific needs. You can 
 
 ## Web Interface
 It offers a modern, and aesthetic user interface built with Flask WebServer. The system provides a dashboard for interactive queries and video uploads, a saved analysis section for reviewing past results. With SurvAI, you can easily monitor and analyze video footage with the power of AI.
-![Screenshot (169)](https://github.com/Iyaad-luqman/AI-Surveillance-System/assets/86549899/15ccd120-efc2-414a-86f2-9153fdb7791f)
 
-![Screenshot (168)](https://github.com/Iyaad-luqman/AI-Surveillance-System/assets/86549899/72c55a29-2bf4-4d19-b70c-cc98510ba2fb)
+![Screenshot 2024-05-24 220442](https://github.com/Iyaad-luqman/AI-Surveillance-System/assets/86549899/babfd61a-61da-4c36-8e5e-342f9117bacb)
+![Screenshot 2024-05-24 220332](https://github.com/Iyaad-luqman/AI-Surveillance-System/assets/86549899/f2628d59-d1f5-468d-a325-8ce6c6815594)
+
 
 
 
