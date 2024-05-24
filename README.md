@@ -23,7 +23,17 @@ The AI Automated CCTV Surveillance system is designed to process CCTV footage, d
 
 SurvAI is designed to be flexible and adaptable to your specific needs. You can configure the system to use different NLP models, such as Gemini or Ollama, depending on your requirements. This can be easily done by modifying the `settings.yaml` file. This feature allows you to fine-tune the system's performance and accuracy to better suit your use case.
 
+## Web Interface
+It offers a modern, and aesthetic user interface built with Flask WebServer. The system provides a dashboard for interactive queries and video uploads, a saved analysis section for reviewing past results. With SurvAI, you can easily monitor and analyze video footage with the power of AI.
+![Screenshot (169)](https://github.com/Iyaad-luqman/AI-Surveillance-System/assets/86549899/15ccd120-efc2-414a-86f2-9153fdb7791f)
+
+![Screenshot (168)](https://github.com/Iyaad-luqman/AI-Surveillance-System/assets/86549899/72c55a29-2bf4-4d19-b70c-cc98510ba2fb)
+
+
+
 ## How It Works (Detailed Workflow)
+
+![image](https://github.com/Iyaad-luqman/AI-Surveillance-System/assets/86549899/a764838b-d426-4e78-b655-d172639804a2)
 
 
 ### User Input
@@ -56,9 +66,6 @@ The AI Automated CCTV Surveillance system also includes a fine-tuning feature fo
 **Save and View Results:** The extracted clips are saved and labeled with the detected incident type. Users can view these results on the web interface and have the option to save them for future reference.
 
 **False Positive Reporting:** Users can report false positives through the web interface. This feedback is used to fine-tune the model, improving its accuracy over time.
-
-## Web Interface
-It offers a modern, and aesthetic user interface built with Flask WebServer. The system provides a dashboard for interactive queries and video uploads, a saved analysis section for reviewing past results. With SurvAI, you can easily monitor and analyze video footage with the power of AI.
 
 ## Summary
 
