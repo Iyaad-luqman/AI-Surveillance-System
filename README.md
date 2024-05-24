@@ -19,7 +19,12 @@ The AI Automated CCTV Surveillance system is designed to process CCTV footage, d
 
 **False Positive Reporting:** Users can report false positives to fine-tune the model for better accuracy.
 
+## Configurable NLP Models
+
+SurvAI is designed to be flexible and adaptable to your specific needs. You can configure the system to use different NLP models, such as Gemini or Ollama, depending on your requirements. This can be easily done by modifying the `settings.yaml` file. This feature allows you to fine-tune the system's performance and accuracy to better suit your use case.
+
 ## How It Works (Detailed Workflow)
+
 
 ### User Input
 
@@ -43,11 +48,17 @@ The AI Automated CCTV Surveillance system is designed to process CCTV footage, d
 
 **Extract Incident Clips:** When a match is found, the system extracts the relevant part of the video corresponding to the detected incident. If the duration of the detected incident is less than four seconds, the system extends the clip before and after to fit a minimum duration of four seconds.
 
+### Threshold Fine-tuning:
+The AI Automated CCTV Surveillance system also includes a fine-tuning feature for specific use cases. This is implemented in the fine_tune.py file. The fine-tuning process uses a set of images to adjust the model's threshold for better accuracy in detecting incidents. This allows the system to be more effective in different scenarios by learning from the specific characteristics of the provided images.
+
 ### Postprocessing
 
 **Save and View Results:** The extracted clips are saved and labeled with the detected incident type. Users can view these results on the web interface and have the option to save them for future reference.
 
 **False Positive Reporting:** Users can report false positives through the web interface. This feedback is used to fine-tune the model, improving its accuracy over time.
+
+## Web Interface
+It offers a modern, and aesthetic user interface built with Flask WebServer. The system provides a dashboard for interactive queries and video uploads, a saved analysis section for reviewing past results. With SurvAI, you can easily monitor and analyze video footage with the power of AI.
 
 ## Summary
 
