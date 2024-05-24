@@ -157,6 +157,12 @@ def analyze():
     
     categories_list = json_data.get('categories', [])
     type_list = json_data.get('type', [])
+    if "Cars passing" not in categories_list:
+      categories_list.append("Cars passing")
+      type_list.append("False")
+    if "People walking" not in categories_list:
+      categories_list.append("People walking")
+      type_list.append("False")
     result = classify_videos(f"static/run-test/{dir_name}/original.mp4", categories_list, type_list, dir_name, remove_duplicate_frames=removeDuplicates, device=device)
     time_frames = list(result.keys())
     titles = list(result.values())

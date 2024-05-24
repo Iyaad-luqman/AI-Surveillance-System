@@ -4,10 +4,10 @@ import open_clip
 import time
 import cv2
 from tqdm import tqdm
-from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 import os
 from moviepy.editor import VideoFileClip
 import numpy as np
+from datetime import datetime
 
 
 def save_model(model, filepath):
@@ -162,6 +162,8 @@ def group_categories(category_dict, categories, true_case,dir_name):
         grouped_dict[f"{start_time}-{prev_time}"] = prev_category
     print('Before:', grouped_dict)
     grouped_dict = adjust_timeframes(grouped_dict)
+    grouped_dict = merge_overlapping_timeframes(grouped_dict)
+    print('After:', grouped_dict)
     trim_videos(f"static/run-test/{dir_name}/original.mp4", grouped_dict, f"static/run-test/{dir_name}" )
     return grouped_dict
 
@@ -199,6 +201,27 @@ def adjust_timeframes(input_dict):
     
     return output_dict
 
+def merge_overlapping_timeframes(timeframes):
+    # Convert the timeframes to a list of tuples with start and end times as datetime objects
+    timeframes_list = [(datetime.strptime(start, "%H:%M:%S:%f"), datetime.strptime(end, "%H:%M:%S:%f"), category)
+        for timeframe, category in timeframes.items() if timeframe.count('-') == 1 for start, end in [timeframe.split('-')]]
+
+    # Sort the list by start time
+    timeframes_list.sort()
+
+    merged_timeframes = []
+    for timeframe in timeframes_list:
+        # If the list of merged timeframes is empty, or the current timeframe does not overlap with the previous one, append it to the list
+        if not merged_timeframes or timeframe[0] > merged_timeframes[-1][1]:
+            merged_timeframes.append(list(timeframe))
+        else:
+            # Otherwise, merge the current timeframe with the previous one by extending the end time
+            merged_timeframes[-1][1] = max(merged_timeframes[-1][1], timeframe[1])
+
+    # Convert the merged timeframes back to the original format
+    merged_timeframes_dict = {f"{start.strftime('%H:%M:%S:%f')[:-3]}-{end.strftime('%H:%M:%S:%f')[:-3]}": category for start, end, category in merged_timeframes}
+
+    return merged_timeframes_dict
 
 def convert_to_time_string(seconds):
     hours = int(seconds // 3600)
