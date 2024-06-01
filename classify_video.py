@@ -35,7 +35,7 @@ def initialize_model(model_name='ViT-B-32', pretrained='laion2b_s34b_b79k', mode
 def classify_frame(frame, frame_count, fps, categories, model, preprocess, tokenizer,  device='cpu'):
     # start_time = time.time()
     default_category = "Unknown"
-    threshold = 0.47
+    threshold = 0.57
     # Define the categories
         
     # Preprocess the frame

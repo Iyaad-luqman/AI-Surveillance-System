@@ -257,8 +257,14 @@
                 </div>
             </div>
         </div>
+        {% endfor %}    
+
         <br><br>
-        {% endfor %}
+        {% if titles is undefined or not titles %}
+            <div class="search-bar">
+                <p style="font-size: 30px; text-align: center;">No results found</p>
+            </div>
+        {% endif %}
         <script>
             function reportFalsePositive(dirName, title, index, buttonElement) {
 
